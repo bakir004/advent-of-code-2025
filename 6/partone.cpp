@@ -24,17 +24,15 @@ int main() {
     if(!imaBrojeva) { 
       istringstream redTok(trenutniRed);
       char c;
-      while(redTok >> c) {
+      while(redTok >> c)
         operatori.push_back(c);
-      }
       break;
     }
     istringstream redTok(trenutniRed);
     vector<long long> redMatrice;
     long long n;
-    while(redTok >> n) {
+    while(redTok >> n)
       redMatrice.push_back(n);
-    }
     matrica.push_back(redMatrice);
   }
 
@@ -43,23 +41,11 @@ int main() {
     long long rezultat = 0;
     if(operatori[j] == '*') rezultat = 1;
     for(int i = 0; i < matrica.size(); i++) {
-      if(operatori[j] == '+')
-        rezultat += matrica[i][j];
-      else
-        rezultat *= matrica[i][j];
+      if(operatori[j] == '+') rezultat += matrica[i][j];
+      else rezultat *= matrica[i][j];
     }
     konacniZbir += rezultat;
   }
   cout << konacniZbir;
-
-  // for(auto& red : matrica) {
-  //   for(auto& e : red)
-  //     cout << e << " ";
-  //   cout << "\n";
-  // }
-  // cout << "operatori:\n";
-  // for(auto& e : operatori)
-  //   cout << e << " ";
-  //
   return 0;
 }

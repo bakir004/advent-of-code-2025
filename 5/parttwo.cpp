@@ -15,32 +15,20 @@ int main() {
     iss >> a >> c >> b;
     ranges.push_back({a,b});
   }
-  sort(ranges.begin(), ranges.end(), [](auto r1, auto r2){
+  sort(ranges.begin(), ranges.end(), [](auto& r1, auto& r2){
     return r1.first < r2.first;
   });
-  long long n, count = 0;
+  long long count = 0;
 
-  for(int i = 0; i < ranges.size(); i++) {
-    if(i == ranges.size()-1) {
-      count += ranges[i].second - ranges[i].first+1;
-      break;
-    }
-    // auto r = ranges[i];
-    // auto r2 = ranges[i+1];
-    // cout << "[" << r.first << ',' << r.second << "] i \n";
-    // cout << "[" << r2.first << ',' << r2.second << "]\n";
+  for(int i = 0; i < ranges.size()-1; i++) {
     if(ranges[i].second >= ranges[i+1].first) {
       ranges[i].second = max(ranges[i].second,ranges[i+1].second);
       ranges.erase(ranges.begin()+i+1);
       i--;
-    } else {
-      count += ranges[i].second - ranges[i].first+1;
-    }
+    } else count += ranges[i].second - ranges[i].first+1;
   }
+  count += ranges[ranges.size()-1].second - ranges[ranges.size()-1].first+1;
 
-  // for(auto& r : ranges) {
-  //   cout << "[" << r.first << ',' << r.second << "]\n";
-  // }
   cout << count;
   return 0;
 }

@@ -17,37 +17,29 @@ int main() {
   int m = matrix.size(), n = matrix[0].size();
   int count = 0;
 
-  while(true) {
-    int countForRound = 0;
-    for(int i = 0; i < m; i++) {
-      for(int j = 0; j < n; j++) {
-        if(matrix[i][j] != '@') continue;
-        int countOfAts = 0;
-        countOfAts += valid(i+1,j-1,m,n,matrix);
-        countOfAts += valid(i+1,j,  m,n,matrix);
-        countOfAts += valid(i+1,j+1,m,n,matrix);
-        countOfAts += valid(i-1,j-1,m,n,matrix);
-        countOfAts += valid(i-1,j,  m,n,matrix);
-        countOfAts += valid(i-1,j+1,m,n,matrix);
-        countOfAts += valid(i  ,j-1,m,n,matrix);
-        countOfAts += valid(i  ,j+1,m,n,matrix);
-        if(countOfAts < 4) {
-          countForRound++;
-          matrix[i][j] = 'x';
-        }
+  for(int i = 0; i < m; i++) {
+    for(int j = 0; j < n; j++) {
+      if(matrix[i][j] != '@') continue;
+      int countOfAts = 0;
+      countOfAts += valid(i+1,j-1,m,n,matrix);
+      countOfAts += valid(i+1,j,  m,n,matrix);
+      countOfAts += valid(i+1,j+1,m,n,matrix);
+      countOfAts += valid(i-1,j-1,m,n,matrix);
+      countOfAts += valid(i-1,j,  m,n,matrix);
+      countOfAts += valid(i-1,j+1,m,n,matrix);
+      countOfAts += valid(i  ,j-1,m,n,matrix);
+      countOfAts += valid(i  ,j+1,m,n,matrix);
+      if(countOfAts < 4) {
+        count++;
+        matrix[i][j] = 'x';
       }
     }
-    for(auto& s : matrix)
-      for(auto& c : s)
-        if(c == 'x')
-          c = '.';
-
-    if(countForRound == 0) break;
-    count += countForRound;
   }
+  for(auto& s : matrix)
+    for(auto& c : s)
+      if(c == 'x')
+        c = '.';
   cout << count << "\n";
-  for(auto s : matrix)
-    cout << s << '\n';
 
   return 0;
 }

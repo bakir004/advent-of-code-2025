@@ -23,19 +23,11 @@ public:
   }
 };
 
-struct Point {
-  long long id, x, y, z;
-  void print() {
-    cout << "{" << id << ": {" << x << ',' << y << ',' << z << "}}\n";
-  }
-};
+struct Point { long long id, x, y, z; };
 
 struct Edge {
   double w;
   long long p1, p2;
-  void print() {
-    cout << "(" << p1 << "-" << p2 << ", " << w << ")\n";
-  }
 };
 
 double d(Point &p1, Point &p2) {
@@ -80,53 +72,23 @@ int main() {
     points.push_back(p);
   }
   vector<Edge> edges = getEdges(points);
-  sort(edges.begin(), edges.end(), [](Edge &e1, Edge &e2)
+  sort(edges.begin(), edges.end(), [](const Edge &e1, const Edge &e2)
        { return e1.w < e2.w; });
 
   vector<vector<int>> graph(points.size(), vector<int>());
   UnionFind u(points.size());
-  vector<bool> completed(points.size(), false);
-  int remaining = points.size();
 
-  int count = 0;
   int edgeCount = 0;
   for (auto &e : edges) {
-    if (u.find(e.p1) != u.find(e.p2)) {
-      u.unite(e.p1, e.p2);
-      edgeCount++;
-      graph[e.p1].push_back(e.p2);
-      graph[e.p2].push_back(e.p1);
-      if(edgeCount == points.size()-1) {
-        cout << points[e.p1].x * points[e.p2].x;
-      }
-    }
-    if(!completed[e.p1]) {
-      completed[e.p1] = true;
-      remaining--;
-    }
-    if(!completed[e.p2]) {
-      completed[e.p2] = true;
-      remaining--;
-    }
-    if (count >= 1000) break;
-    if (remaining <= 0) break;
-  }
+    if (u.find(e.p1) == u.find(e.p2)) continue;
 
-  vector<bool> visited(points.size(), false);
-  vector<long long> sizes;
-  for (int i = 0; i < visited.size(); i++)
-  {
-    if (visited[i])
-      continue;
-    long long size = floodfill(i, visited, graph);
-    sizes.push_back(size);
+    u.unite(e.p1, e.p2);
+    edgeCount++;
+    graph[e.p1].push_back(e.p2);
+    graph[e.p2].push_back(e.p1);
+    if(edgeCount == points.size()-1)
+      cout << points[e.p1].x * points[e.p2].x;
   }
-  sort(sizes.begin(), sizes.end());
-  int n = sizes.size();
-  long long pr = 1;
-  for (int i = 0; i < min((int)sizes.size(), 3); i++)
-    pr *= sizes[n - 1 - i];
-  // cout << pr;
 
   return 0;
 }

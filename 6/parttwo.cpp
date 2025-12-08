@@ -4,7 +4,6 @@
 using namespace std;
 
 long long solveSingleProblem(vector<string>& matrix, int from, int to) {
-  cout << "from: " << from << " to " << to << "\n";
   char op = matrix[matrix.size()-1][from];
   int m = matrix.size(), n = matrix[0].size();
   long long rez = op == '*';
@@ -13,15 +12,9 @@ long long solveSingleProblem(vector<string>& matrix, int from, int to) {
     for(int i = 0; i < m-1; i++)
       if(matrix[i][j] != ' ')
         currNum = currNum * 10 + (matrix[i][j]-'0');
-    cout << "Curr: " << currNum << '\n';
     if(op == '*') rez *= currNum;
     else rez += currNum;
   }
-  cout << "Rez: " << rez << "\n";
-  // 123 328  51 64 
-  //  45 64  387 23 
-  //   6 98  215 314
-  // *   +   *   +  
   return rez;
 }
 
