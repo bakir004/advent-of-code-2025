@@ -38,10 +38,8 @@ int findBestButtons(int target, vector<int>& buttons) {
         x ^= buttons[j];
       }
     }
-    if(x == target && count < minCount) {
-      // cout << choices << " is the winner with " << count << " buttons\n";
+    if(x == target && count < minCount)
       minCount = count;
-    }
   }
   return minCount;
 }
@@ -62,30 +60,19 @@ int main() {
     joltage = buttons.back();
     buttons.pop_back();
     
-    // read correctly
     int target = lightsToBin(lights.substr(1, lights.size()-2));
     int lightsSize = lights.size()-2;
-    //   [.##.] (3) (1,3) (2) (2,3) (0,2) (0,1) {3,5,4,7}
-    //  [...#.] (0,2,3,4) (2,3) (0,4) (0,1,2) (1,2,3,4) {7,5,12,7,2}
-    // [.###.#] (0,1,2,3,4) (0,3,4) (0,1,2,4,5) (1,2) {10,11,11,5,10,5}
     vector<int> buttonsNums;
-    // cout << lights << "\n";
     for(auto& s : buttons) {
-      // cout << "doing " << s << "\n";
       istringstream iss(s.substr(1, s.size()-2));
       int n, buttonNum = 0; char c;
       while(iss >> n) {
-        // cout << "for this button n is " << n << "\n";
         iss >> c;
         buttonNum += (1 << (lightsSize-1-n));
         if(!iss) break;
       }
-      // cout << "for this buttonNum is " << bitset<10>(buttonNum) << "\n";
       buttonsNums.push_back(buttonNum);
     }
-    // cout << "\nButtonNums " << ": \n";
-    // for(auto& e : buttonsNums)
-    // cout << bitset<10>(e) << " ";
     finalCount += findBestButtons(target, buttonsNums);
   }
   cout << finalCount;

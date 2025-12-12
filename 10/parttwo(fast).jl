@@ -41,62 +41,62 @@ using JuMP
 using HiGHS
 
 function solve_machine(buttons, target)
-    num_counters = length(target)
-    num_buttons = length(buttons)
-    
-    model = Model(HiGHS.Optimizer)
-    set_silent(model)
-    
-    @variable(model, x[1:num_buttons] >= 0, Int)
-    
-    for c in 1:num_counters
-        @constraint(model, sum(x[b] for b in 1:num_buttons if c in buttons[b]) == target[c])
-    end
-    
-    @objective(model, Min, sum(x))
-    
-    optimize!(model)
-    
-    if termination_status(model) == MOI.OPTIMAL
-        return Int(objective_value(model))
-    else
-        return -1
-    end
+  num_counters = length(target)
+  num_buttons = length(buttons)
+
+  model = Model(HiGHS.Optimizer)
+  set_silent(model)
+
+  @variable(model, x[1:num_buttons] >= 0, Int)
+
+  for c in 1:num_counters
+    @constraint(model, sum(x[b] for b in 1:num_buttons if c in buttons[b]) == target[c])
+  end
+
+  @objective(model, Min, sum(x))
+
+  optimize!(model)
+
+  if termination_status(model) == MOI.OPTIMAL
+    return Int(objective_value(model))
+  else
+    return -1
+  end
 end
 
 function parse_input(filename)
-    machines = []
-    
-    for line in eachline(filename)
-        isempty(strip(line)) && continue
-        
-        button_matches = collect(eachmatch(r"\(([^)]+)\)", line))
-        buttons = []
-        for m in button_matches
-            indices = parse.(Int, split(m.captures[1], ","))
-            push!(buttons, indices .+ 1)  # Convert to 1-indexed
-        end
-        
-        target_match = match(r"\{([^}]+)\}", line)
-        target = parse.(Int, split(target_match.captures[1], ","))
-        
-        push!(machines, (buttons, target))
+  machines = []
+
+  for line in eachline(filename)
+    isempty(strip(line)) && continue
+
+    button_matches = collect(eachmatch(r"\(([^)]+)\)", line))
+    buttons = []
+    for m in button_matches
+      indices = parse.(Int, split(m.captures[1], ","))
+      push!(buttons, indices .+ 1)  # Convert to 1-indexed
     end
-    
-    return machines
+
+    target_match = match(r"\{([^}]+)\}", line)
+    target = parse.(Int, split(target_match.captures[1], ","))
+
+    push!(machines, (buttons, target))
+  end
+
+  return machines
 end
 
 function main()
-    machines = parse_input("input.txt")
-    
-    total = 0
-    for (i, (buttons, target)) in enumerate(machines)
-        result = solve_machine(buttons, target)
-        println("Machine $i: $result")
-        total += result
-    end
-    
-    println("\nTotal: $total")
+  machines = parse_input("input.txt")
+
+  total = 0
+  for (i, (buttons, target)) in enumerate(machines)
+    result = solve_machine(buttons, target)
+    println("Machine $i: $result")
+    total += result
+  end
+
+  println("\nTotal: $total")
 end
 
 main()

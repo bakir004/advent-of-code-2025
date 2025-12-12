@@ -78,7 +78,6 @@ int main()
     }
     memo.clear(); 
     int result = dp(joltage, buttons);
-    cout << "Machine result: " << result << endl;
     finalCount += result;
   }
   cout << finalCount;

@@ -63,8 +63,6 @@ int main() {
 
   set<pair<long long, long long>> redSet(points.begin(), points.end());
 
-  cerr << "Total points: " << points.size() << endl;
-
   vector<vector<pair<int, int>>> greenNeighbors(points.size());
   int dx[] = {-1, 0, 1, -1, 1, -1, 0, 1};
   int dy[] = {-1, -1, -1, 0, 0, 1, 1, 1};
@@ -79,14 +77,10 @@ int main() {
     }
   }
 
-  cerr << "Green neighbors computed" << endl;
-
   long long maxArea = 0;
   long long totalPairs = (long long)points.size() * (points.size() - 1) / 2;
   long long pairsChecked = 0;
   int lastPercent = -1;
-
-  cerr << "Checking " << totalPairs << " rectangle pairs..." << endl;
 
   for (int i = 0; i < points.size(); i++) {
     for (int j = i + 1; j < points.size(); j++) {
@@ -168,7 +162,7 @@ int main() {
 
   cerr << "\n100% complete!" << endl;
   cerr << "Final max area: ";
-  cout << maxArea << endl;
+  cout << maxArea;
 
   return 0;
 }
